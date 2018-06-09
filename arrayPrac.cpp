@@ -19,9 +19,11 @@
  * So, c-style arrays are bad I guess because accessing raw stuff is bad
  */
 #include <iostream>
-#include <cstdlib>
-#include <array>
-#include <ctime>
+#include <cstdlib> //srand
+#include <array> //array
+#include <cstring> //memcpy
+#include <ctime> //time
+#include <algorithm> //fill
 
 using namespace std;
 #define MAXSIZE 30
@@ -32,12 +34,14 @@ iterateAndPrint(array<int, MAXSIZE> & myarray)
 	int i;
 
 	//bare iteration to extract
+	//Slightly faster than iterators but mostly negligable
 	cout << "Bare iteration:\n";
 	for(i = 0; i < MAXSIZE; i++)
 		cout << i << ": " << myarray[i] << endl;
 
 	//using an iterator
 	cout << "Iterator:\n";
+	//slightly slower than using indices but it's worth it
 	for(array<int, MAXSIZE>::iterator it = myarray.begin(); it != myarray.end(); ++it)
 		cout << *it << endl;
 
@@ -51,9 +55,17 @@ void
 initArray(array<int, MAXSIZE> & myarray)
 {
 	int i;
+	int tmp[MAXSIZE];
+
 	//bare iteration to insert
 	for(i = 0; i < MAXSIZE; i++)
 		myarray[i] = rand() % MAXSIZE;
+	//can also use fill if we want all elements as some nonzero constant
+	myarray.fill(rand() % MAXSIZE);
+	
+	fill(tmp, tmp+MAXSIZE, MAXSIZE); //the c++ memset and apparently it's super fast
+	//can copy as such using the data pointer
+	memcpy(myarray.data(), tmp, sizeof(int)*MAXSIZE);
 }
 
 int
