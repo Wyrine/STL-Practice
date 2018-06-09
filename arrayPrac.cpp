@@ -26,27 +26,48 @@
 using namespace std;
 #define MAXSIZE 30
 
-int
-main(int argc, char** argv)
+void
+iterateAndPrint(array<int, MAXSIZE> & myarray)
 {
-	array<int, MAXSIZE> myarray = {1, 2};
 	int i;
 
-	srand(time(NULL));
-
-	//bare iteration to insert
-	for(i = 0; i < MAXSIZE; i++)
-		myarray[i] = rand();
-
 	//bare iteration to extract
+	cout << "Bare iteration:\n";
 	for(i = 0; i < MAXSIZE; i++)
 		cout << i << ": " << myarray[i] << endl;
 
 	//using an iterator
+	cout << "Iterator:\n";
 	for(array<int, MAXSIZE>::iterator it = myarray.begin(); it != myarray.end(); ++it)
 		cout << *it << endl;
 
-	//less lines but still using an iterator
+	//less lines through dynamic type but still using an iterator
+	cout << "Iterator with auto type:\n";
 	for(auto it = myarray.begin(); it != myarray.end(); ++it)
 		cout << *it << endl;
+}
+
+void
+initArray(array<int, MAXSIZE> & myarray)
+{
+	int i;
+	//bare iteration to insert
+	for(i = 0; i < MAXSIZE; i++)
+		myarray[i] = rand() % MAXSIZE;
+}
+
+int
+main(int argc, char** argv)
+{
+	srand(time(NULL));
+	//static initialization
+	array<int, MAXSIZE> myarray = {1, 2};
+
+	//show that the elements not initialized are set to 0
+	iterateAndPrint(myarray);
+	initArray(myarray);
+	iterateAndPrint(myarray);
+
+	
+
 }
