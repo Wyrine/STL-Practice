@@ -28,7 +28,7 @@
 using namespace std;
 #define MAXSIZE 30
 
-void
+	void
 iterateAndPrint(array<int, MAXSIZE> & myarray)
 {
 	int i;
@@ -51,35 +51,47 @@ iterateAndPrint(array<int, MAXSIZE> & myarray)
 		cout << *it << endl;
 }
 
-void
+	void
 initArray(array<int, MAXSIZE> & myarray)
 {
 	int i;
 	int tmp[MAXSIZE];
 
+	//can also use fill if we want all elements as some nonzero constant
+	myarray.fill(rand() % MAXSIZE);
+
+	//startAddress, endAddress, valueToFillWith
+	fill(tmp, tmp+MAXSIZE, MAXSIZE); //the c++ memset and apparently it's super fast
+
+	//can copy as such using the data pointer
+	memcpy(myarray.data(), tmp, sizeof(int)*MAXSIZE);
+
 	//bare iteration to insert
 	for(i = 0; i < MAXSIZE; i++)
 		myarray[i] = rand() % MAXSIZE;
-	//can also use fill if we want all elements as some nonzero constant
-	myarray.fill(rand() % MAXSIZE);
-	
-	fill(tmp, tmp+MAXSIZE, MAXSIZE); //the c++ memset and apparently it's super fast
-	//can copy as such using the data pointer
-	memcpy(myarray.data(), tmp, sizeof(int)*MAXSIZE);
 }
 
-int
+	int
 main(int argc, char** argv)
 {
 	srand(time(NULL));
 	//static initialization
 	array<int, MAXSIZE> myarray = {1, 2};
+	array<int, MAXSIZE> second;
 
 	//show that the elements not initialized are set to 0
 	iterateAndPrint(myarray);
 	initArray(myarray);
 	iterateAndPrint(myarray);
 
-	
+	//for arrays max_size == size, always
+	cout << myarray.size() << " | " << myarray.max_size() << endl;
 
+	//.empty() tells you whether max_size() == 0 which seems pointless to me
+	// i'm sure there's a reason
+
+	//can also swap the contents of two arrays
+	//but they must be the same size
+	myarray.swap(second);
+	cout << "Second front: " << second.front() << endl;
 }
